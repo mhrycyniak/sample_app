@@ -31,6 +31,35 @@ describe "Static pages" do
           expect(page).to have_selector("li##{item.id}", text: item.content)
         end
       end
+
+      describe "pagination" do
+        it "should paginate the feed" do
+          35.times { FactoryGirl.create(:micropost, user: user, content: "Test Test Test") }
+          visit root_path
+          page.should have_selector("div.pagination")
+        end
+      end
+
+      describe "micropost sidebar counts" do
+        describe "singular post" do
+          before do
+            FactoryGirl.create(:micropost, user: user, content: "Test")
+            visit root_path
+          end
+
+          it { should have_selector('span', text: "#{Micropost.count.to_s} micropost") }
+        end
+
+        describe "multiple posts" do
+          before do
+            FactoryGirl.create(:micropost, user: user, content: "Test")
+            FactoryGirl.create(:micropost, user: user, content: "Test1")
+            visit root_path
+          end
+
+          it { should have_selector('span', text: "#{Micropost.count.to_s} micropost".pluralize) }
+        end
+      end
     end
   end
 

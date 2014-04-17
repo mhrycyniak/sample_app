@@ -42,4 +42,15 @@ describe "Micropost pages" do
       end
     end
   end
+
+  describe "attempt to delete micropost for another user" do
+  	let(:other_user) { FactoryGirl.create(:user, email: 'mike@example.com') }
+
+  	before do
+  		FactoryGirl.create(:micropost, user: other_user)
+  		visit user_path(other_user)
+  	end
+
+  	it { should_not have_link 'delete'}
+  end
 end

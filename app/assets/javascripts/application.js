@@ -15,3 +15,16 @@
 //= require bootstrap
 //= require turbolinks
 //= require_tree .
+
+
+function countdown() {
+    // Max characters
+    var remaining = 140 - $('#micropost_content').val().length;
+    $('.countdown').text(remaining + ' characters remaining.');
+}
+
+$(document).ready(function() {
+    countdown();
+    $('#micropost_content').change(countdown);
+    $('#micropost_content').keyup(countdown);
+});
